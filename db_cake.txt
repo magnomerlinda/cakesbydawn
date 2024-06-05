@@ -1,0 +1,134 @@
+
+
+CREATE TABLE users (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(50) DEFAULT NULL,
+    middle_name VARCHAR(50) DEFAULT NULL,
+    last_name VARCHAR(50) DEFAULT NULL,
+    type VARCHAR(10) DEFAULT 'regular',
+    status VARCHAR(10) DEFAULT 'active',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    INDEX (username),
+    INDEX (email)
+);
+CREATE TABLE delivery (
+    DeliveryID INT(11) PRIMARY KEY AUTO_INCREMENT,
+    PaymentID INT(11) NOT NULL,
+    OrderID INT(11),
+    TotalAmount INT(11) NOT NULL,
+    PaymentMethod ENUM('cash_on_delivery', 'gcash'),
+    OrderDate TIMESTAMP,
+    PaymentDate TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+    Reference VARCHAR(255) NOT NULL,
+    Address TEXT,
+    Receiver VARCHAR(255) NOT NULL,
+    Status VARCHAR(50) NOT NULL DEFAULT 'pending',
+    Location VARCHAR(255),
+    Rider VARCHAR(255),
+    Phone VARCHAR(11),
+    CustomerName VARCHAR(255),
+    date_updated DATETIME,
+);
+
+CREATE TABLE riders (
+    RiderID INT(11) NOT NULL AUTO_INCREMENT,
+    DeliveryID INT(11) DEFAULT NULL,
+    PaymentID INT(11) DEFAULT NULL,
+    OrderID INT(11) DEFAULT NULL,
+    TotalAmount INT(11) DEFAULT NULL,
+    PaymentMethod ENUM('cash_on_delivery', 'gcash') DEFAULT NULL,
+    GCashScreenshot VARCHAR(255) DEFAULT NULL,
+    PaymentDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    Reference VARCHAR(255) DEFAULT NULL,
+    Address VARCHAR(255) DEFAULT NULL,
+    Receiver VARCHAR(255) DEFAULT NULL,
+    Status VARCHAR(50) DEFAULT 'pending',
+    Location VARCHAR(255) DEFAULT NULL,
+    Rider VARCHAR(255) DEFAULT NULL,
+    phone VARCHAR(11) DEFAULT NULL,
+    PRIMARY KEY (RiderID)
+);
+CREATE TABLE product (
+    ProductID INT(11) NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(255) DEFAULT NULL,
+    Description TEXT DEFAULT NULL,
+    Price DECIMAL(10,2) DEFAULT NULL,
+    StockQuantity INT(11) DEFAULT NULL,
+    Category VARCHAR(50) DEFAULT NULL,
+    Image VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (ProductID)
+);
+CREATE TABLE payment (
+    PaymentID INT(11) NOT NULL AUTO_INCREMENT,
+    OrderID INT(11) DEFAULT NULL,
+    TotalAmount INT(11) DEFAULT NULL,
+    PaymentMethod ENUM('cash_on_delivery', 'gcash') NOT NULL,
+    GCashScreenshot VARCHAR(255) DEFAULT NULL,
+    PaymentDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    reference VARCHAR(255) DEFAULT NULL,
+    address VARCHAR(255) DEFAULT NULL,
+    receiver VARCHAR(255) DEFAULT NULL,
+    phone VARCHAR(11) DEFAULT NULL,
+    PRIMARY KEY (PaymentID)
+);
+CREATE TABLE order_items (
+    OrderItemID INT(11) NOT NULL AUTO_INCREMENT,
+    OrderID INT(11) DEFAULT NULL,
+    ProductID INT(11) DEFAULT NULL,
+    ProductName VARCHAR(255) DEFAULT NULL,
+    Quantity INT(11) DEFAULT NULL,
+    Price DECIMAL(10,2) DEFAULT NULL,
+    PRIMARY KEY (OrderItemID)
+);
+CREATE TABLE orders (
+    OrderID INT(11) PRIMARY KEY AUTO_INCREMENT,
+    SessionID VARCHAR(50),
+    TotalAmount DECIMAL(10, 2),
+    PaymentMethod ENUM('cash_on_delivery', 'gcash'),
+    OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(255),
+    CustomerName VARCHAR(255),
+    Address TEXT,
+    date_updated DATETIME,
+    GCashScreenshot VARCHAR(255),
+    PaymentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reference VARCHAR(255),
+    receiver VARCHAR(255),
+    phone VARCHAR(11)
+);
+
+CREATE TABLE cartlog (
+    CartLogID INT(11) NOT NULL AUTO_INCREMENT,
+    CartID INT(11) NOT NULL,
+    SessionID VARCHAR(50) NOT NULL,
+    ProductID INT(11) NOT NULL,
+    Quantity INT(11) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    DateCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (CartLogID)
+);
+CREATE TABLE cart (
+    CartID INT(11) NOT NULL AUTO_INCREMENT,
+    SessionID VARCHAR(50) DEFAULT NULL,
+    ProductID INT(11) DEFAULT NULL,
+    Quantity INT(11) DEFAULT NULL,
+    Price DECIMAL(10,2) DEFAULT NULL,
+    DateCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (CartID)
+);
+DELIMITER //
+
+CREATE TRIGGER after_orders_insert
+AFTER INSERT ON orders
+FOR EACH ROW
+BEGIN
+    INSERT INTO delivery (OrderID, TotalAmount, PaymentMethod, OrderDate, Status, CustomerName, Address, date_updated, PaymentDate, reference, receiver, phone)
+    VALUES (NEW.OrderID, NEW.TotalAmount, NEW.PaymentMethod, NEW.OrderDate, NEW.Status, NEW.CustomerName, NEW.Address, NEW.date_updated, NEW.PaymentDate, NEW.reference, NEW.receiver, NEW.phone);
+END//
+
+DELIMITER ;
+

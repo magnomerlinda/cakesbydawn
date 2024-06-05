@@ -1,0 +1,64 @@
+CREATE TABLE cartlog (
+    CartLogID INT(11) PRIMARY KEY AUTO_INCREMENT,
+    CartID INT(11) NOT NULL,
+    SessionID VARCHAR(50) NOT NULL,
+    ProductID INT(11) NOT NULL,
+    Quantity INT(11) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    DateCreated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE order_items (
+    OrderItemID INT AUTO_INCREMENT PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    ProductName VARCHAR(255),
+    Quantity INT,
+    Price DECIMAL(10, 2)
+);
+
+CREATE TABLE users (
+    id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(50),
+    middle_name VARCHAR(50),
+    last_name VARCHAR(50),
+    type VARCHAR(10) DEFAULT 'regular',
+    status VARCHAR(10) DEFAULT 'active',
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp()
+);
+
+CREATE INDEX idx_username ON users (username);
+CREATE INDEX idx_email ON users (email);
+
+CREATE TABLE product (
+    ProductID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255),
+    Description TEXT,
+    Price DECIMAL(10,2),
+    StockQuantity INT(11),
+    Category VARCHAR(50),
+    Image VARCHAR(255)
+);
+
+CREATE TABLE payment (
+    PaymentID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    OrderID INT(11),
+    TotalAmount INT(11),
+    PaymentMethod ENUM('cash_on_delivery', 'gcash') NOT NULL,
+    GCashScreenshot VARCHAR(255),
+    PaymentDate TIMESTAMP DEFAULT current_timestamp()
+);
+
+CREATE TABLE orders (
+    OrderID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    SessionID VARCHAR(50),
+    TotalAmount DECIMAL(10,2),
+    OrderDate TIMESTAMP DEFAULT current_timestamp(),
+    Status ENUM('pending', 'processed', 'shipped', 'delivered') DEFAULT 'pending',
+    Quantity INT(11) NOT NULL,
+    DateUpdated DATETIME
+);
+

@@ -1,0 +1,8 @@
+    <div class="column">
+        <h1>Welcome to Mcake Online Shop!</h1>
+        <h2>We offer a delicious variety of cakes for every occasion.</h2>
+        <a href="pages/store/store.php" class="btn">Visit Store</a>
+    </div>
+    <div class="column">
+       <?php include("components/index_image1.php"); ?>
+    </div>

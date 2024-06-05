@@ -1,0 +1,32 @@
+CREATE TABLE users (
+    user_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    username VARCHAR(50) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    INDEX (username)
+);
+
+CREATE TABLE calendar (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    date DATE NOT NULL,
+    availability INT(11) NOT NULL,
+    am INT(11) DEFAULT NULL,
+    pm INT(11) DEFAULT NULL
+) ;
+
+CREATE TABLE booking (
+    booking_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    session_id VARCHAR(50) NOT NULL,
+    reference VARCHAR(100) NOT NULL,
+    fullname VARCHAR(255) NOT NULL,
+    am_pm ENUM('AM', 'PM') NOT NULL,
+    date DATE NOT NULL,
+    payment DECIMAL(10,2) NOT NULL,
+    gcash VARCHAR(50) DEFAULT NULL,
+    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

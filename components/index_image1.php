@@ -1,0 +1,1 @@
+ <img src="public/images/c2.jpg" alt="Cake Image" style="border-radius: 10px; box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.2);">

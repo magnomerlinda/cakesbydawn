@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+}
+
+.column h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.column h2 {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.column img {
+    max-width: 100%;
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffc107;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #ffca28;
+}
+
+@media only screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+		
+    }
+
+    .column {
+        width: 100%;
+        text-align: center;
+    }
+}

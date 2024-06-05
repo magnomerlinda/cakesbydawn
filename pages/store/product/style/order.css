@@ -1,0 +1,24 @@
+/* Table Style */
+.ordert {
+    border-collapse: collapse;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.ordert th, .ordert td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.ordert th {
+    background-color: #87CEEB; /* Sky Blue */
+    color: white;
+}
+
+.ordert tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light Gray */
+}
+
+.ordert tr:hover {
+    background-color: #ddd; /* Gray */
+}
